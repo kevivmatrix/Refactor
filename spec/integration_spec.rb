@@ -6,13 +6,14 @@ describe "Push Daemon" do
 
   before(:all) do
     thread = Thread.new { load "./lib/send_message.rb" }
-    thread.join(0.0005)
+    thread.join(0.05)
   end
 
   describe "commands" do
     describe "PING" do
       it "responds with PONG" do
         socket.send("PING", 0, "127.0.0.1", 6889)
+        sleep 0.005
 
         Timeout.timeout(1) do
           response, _ = socket.recvfrom(8)
@@ -26,7 +27,7 @@ describe "Push Daemon" do
         stub_request :post, "https://android.googleapis.com/gcm/send"
 
         socket.send('SEND t0k3n "Steve: What is up?"', 0, "127.0.0.1", 6889)
-        sleep 0.0001
+        sleep 0.05
 
         assert_requested :post, "https://android.googleapis.com/gcm/send", {
           headers: {
