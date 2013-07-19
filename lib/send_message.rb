@@ -25,6 +25,6 @@ end
 
 socket.bind("0.0.0.0", 6889)
 
-while data = socket.recvfrom(4096)
-  RequestHandler.new(data, socket, queue).respond
+while request_data = socket.recvfrom(4096)
+  RequestHandler.new(request_data, socket, queue).respond
 end

@@ -6,10 +6,14 @@ class RequestHandler
   end
 
   def respond
-    self.send("evaluate_#{request_title_downcased}")
+    self.send(evaluate_request_method)
   end
 
   private
+
+  def evaluate_request_method
+    "evaluate_#{request_title_downcased}"
+  end
 
   def request_title_downcased
     request_data[0].split.first.downcase
