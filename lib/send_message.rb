@@ -6,20 +6,17 @@ require "thread"
 require "httpclient"
 require "socket"
 
+require "message_poper.rb"
+require "request_handler.rb"
+
 queue = Queue.new
 client = HTTPClient.new
+message_poper = MessagePoper.new(client, queue)
 socket = UDPSocket.new
-
-require "request_handler.rb"
 
 10.times do
   Thread.new do
-    while data = queue.pop
-      client.post("https://android.googleapis.com/gcm/send", data, {
-        "Authorization" => "key=AIzaSyCABSTd47XeIH",
-        "Content-Type" => "application/json"
-      })
-    end
+    message_poper.listen
   end
 end
 
